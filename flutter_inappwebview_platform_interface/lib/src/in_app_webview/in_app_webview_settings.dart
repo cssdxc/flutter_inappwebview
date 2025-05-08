@@ -44,6 +44,13 @@ List<ContentBlocker> _deserializeContentBlockers(
 ///This class represents all the WebView settings available.
 @ExchangeableObject(copyMethod: true)
 class InAppWebViewSettings_ {
+  ///新增iOS独立储存路径
+  @SupportedPlatforms(platforms: [
+    IOSPlatform(),
+    MacOSPlatform(),
+  ])
+  bool? iOSDataStorageUUID;
+
   ///Set to `true` to be able to listen at the [PlatformWebViewCreationParams.shouldOverrideUrlLoading] event.
   ///
   ///If the [PlatformWebViewCreationParams.shouldOverrideUrlLoading] event is implemented and this value is `null`,
@@ -2013,8 +2020,7 @@ as it can cause framerate drops on animations in Android 9 and lower (see [Hybri
   ///If the [PlatformWebViewCreationParams.onShowFileChooser] event is implemented and this value is `null`,
   ///it will be automatically inferred as `true`, otherwise, the default value is `false`.
   ///This logic will not be applied for [PlatformInAppBrowser], where you must set the value manually.
-  @SupportedPlatforms(
-      platforms: [AndroidPlatform()])
+  @SupportedPlatforms(platforms: [AndroidPlatform()])
   bool? useOnShowFileChooser;
 
   ///Specifies a feature policy for the `<iframe>`.
@@ -2101,6 +2107,7 @@ as it can cause framerate drops on animations in Android 9 and lower (see [Hybri
 
   @ExchangeableObjectConstructor()
   InAppWebViewSettings_({
+    this.iOSDataStorageUUID,
     this.useShouldOverrideUrlLoading,
     this.useOnLoadResource,
     this.useOnDownloadStart,
@@ -2379,6 +2386,9 @@ class WebViewOptions {
 @Deprecated('Use InAppWebViewSettings instead')
 class InAppWebViewOptions
     implements WebViewOptions, BrowserOptions, AndroidOptions, IosOptions {
+  ///iOS独立储存uuid
+  bool? iOSDataStorageUUID;
+
   ///Set to `true` to be able to listen at the [PlatformWebViewCreationParams.shouldOverrideUrlLoading] event. The default value is `false`.
   bool useShouldOverrideUrlLoading;
 
@@ -2492,7 +2502,8 @@ class InAppWebViewOptions
   bool allowUniversalAccessFromFileURLs;
 
   InAppWebViewOptions(
-      {this.useShouldOverrideUrlLoading = false,
+      {this.iOSDataStorageUUID,
+      this.useShouldOverrideUrlLoading = false,
       this.useOnLoadResource = false,
       this.useOnDownloadStart = false,
       this.clearCache = false,
@@ -2532,6 +2543,7 @@ class InAppWebViewOptions
     });
 
     return {
+      "iOSDataStorageUUID": iOSDataStorageUUID,
       "useShouldOverrideUrlLoading": useShouldOverrideUrlLoading,
       "useOnLoadResource": useOnLoadResource,
       "useOnDownloadStart": useOnDownloadStart,
@@ -2573,6 +2585,7 @@ class InAppWebViewOptions
     }
 
     var instance = InAppWebViewOptions();
+    instance.iOSDataStorageUUID = map["iOSDataStorageUUID"];
     instance.useShouldOverrideUrlLoading = map["useShouldOverrideUrlLoading"];
     instance.useOnLoadResource = map["useOnLoadResource"];
     instance.useOnDownloadStart = map["useOnDownloadStart"];
