@@ -49,7 +49,7 @@ class InAppWebViewSettings_ {
     IOSPlatform(),
     MacOSPlatform(),
   ])
-  bool? iOSDataStoreUUID;
+  String? iOSDataStoreUUID;
 
   ///Set to `true` to be able to listen at the [PlatformWebViewCreationParams.shouldOverrideUrlLoading] event.
   ///
@@ -2387,7 +2387,7 @@ class WebViewOptions {
 class InAppWebViewOptions
     implements WebViewOptions, BrowserOptions, AndroidOptions, IosOptions {
   ///iOS独立储存uuid
-  bool? iOSDataStoreUUID;
+  String? iOSDataStoreUUID;
 
   ///Set to `true` to be able to listen at the [PlatformWebViewCreationParams.shouldOverrideUrlLoading] event. The default value is `false`.
   bool useShouldOverrideUrlLoading;

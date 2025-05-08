@@ -622,7 +622,7 @@ class InAppWebViewSettings {
   ///**Officially Supported Platforms/Implementations**:
   ///- iOS
   ///- MacOS
-  bool? iOSDataStoreUUID;
+  String? iOSDataStoreUUID;
 
   ///Specifies a feature policy for the `<iframe>`.
   ///The policy defines what features are available to the `<iframe>` based on the origin of the request
