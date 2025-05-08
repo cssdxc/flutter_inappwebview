@@ -49,7 +49,7 @@ class InAppWebViewSettings_ {
     IOSPlatform(),
     MacOSPlatform(),
   ])
-  bool? iOSDataStorageUUID;
+  bool? iOSDataStoreUUID;
 
   ///Set to `true` to be able to listen at the [PlatformWebViewCreationParams.shouldOverrideUrlLoading] event.
   ///
@@ -2107,7 +2107,7 @@ as it can cause framerate drops on animations in Android 9 and lower (see [Hybri
 
   @ExchangeableObjectConstructor()
   InAppWebViewSettings_({
-    this.iOSDataStorageUUID,
+    this.iOSDataStoreUUID,
     this.useShouldOverrideUrlLoading,
     this.useOnLoadResource,
     this.useOnDownloadStart,
@@ -2387,7 +2387,7 @@ class WebViewOptions {
 class InAppWebViewOptions
     implements WebViewOptions, BrowserOptions, AndroidOptions, IosOptions {
   ///iOS独立储存uuid
-  bool? iOSDataStorageUUID;
+  bool? iOSDataStoreUUID;
 
   ///Set to `true` to be able to listen at the [PlatformWebViewCreationParams.shouldOverrideUrlLoading] event. The default value is `false`.
   bool useShouldOverrideUrlLoading;
@@ -2502,7 +2502,7 @@ class InAppWebViewOptions
   bool allowUniversalAccessFromFileURLs;
 
   InAppWebViewOptions(
-      {this.iOSDataStorageUUID,
+      {this.iOSDataStoreUUID,
       this.useShouldOverrideUrlLoading = false,
       this.useOnLoadResource = false,
       this.useOnDownloadStart = false,
@@ -2543,7 +2543,7 @@ class InAppWebViewOptions
     });
 
     return {
-      "iOSDataStorageUUID": iOSDataStorageUUID,
+      "iOSDataStoreUUID": iOSDataStoreUUID,
       "useShouldOverrideUrlLoading": useShouldOverrideUrlLoading,
       "useOnLoadResource": useOnLoadResource,
       "useOnDownloadStart": useOnDownloadStart,
@@ -2585,7 +2585,7 @@ class InAppWebViewOptions
     }
 
     var instance = InAppWebViewOptions();
-    instance.iOSDataStorageUUID = map["iOSDataStorageUUID"];
+    instance.iOSDataStoreUUID = map["iOSDataStoreUUID"];
     instance.useShouldOverrideUrlLoading = map["useShouldOverrideUrlLoading"];
     instance.useOnLoadResource = map["useOnLoadResource"];
     instance.useOnDownloadStart = map["useOnDownloadStart"];
