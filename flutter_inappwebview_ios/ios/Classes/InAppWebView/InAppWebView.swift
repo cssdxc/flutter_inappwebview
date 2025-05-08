@@ -666,16 +666,20 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate,
             if settings.allowFileAccessFromFileURLs {
                 configuration.preferences.setValue(settings.allowFileAccessFromFileURLs, forKey: "allowFileAccessFromFileURLs")
             }
-            
-            if #available(iOS 9.0, *) {
-                if settings.incognito {
-                    configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
-                } else if settings.cacheEnabled {
-                    configuration.websiteDataStore = WKWebsiteDataStore.default()
-                }
-                if !settings.applicationNameForUserAgent.isEmpty {
-                    if let applicationNameForUserAgent = configuration.applicationNameForUserAgent {
-                        configuration.applicationNameForUserAgent = applicationNameForUserAgent + " " + settings.applicationNameForUserAgent
+
+            if #available(iOS 17.0, *) {
+                if settings.iOSDataStoreUUID != nil  {
+                    configuration.websiteDataStore = WKWebsiteDataStore(forIdentifier: UUID(settings.iOSDataStoreUUID))
+                } else if #available(iOS 9.0, *) {
+                    if settings.incognito {
+                        configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
+                    } else if settings.cacheEnabled {
+                        configuration.websiteDataStore = WKWebsiteDataStore.default()
+                    }
+                    if !settings.applicationNameForUserAgent.isEmpty {
+                        if let applicationNameForUserAgent = configuration.applicationNameForUserAgent {
+                            configuration.applicationNameForUserAgent = applicationNameForUserAgent + " " + settings.applicationNameForUserAgent
+                        }
                     }
                 }
             }
