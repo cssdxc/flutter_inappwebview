@@ -795,12 +795,13 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate,
             if #available(iOS 9.0, *) {
                 if #available(iOS 17.0, *) {
                     if settings.iOSDataStoreUUID != nil {
-                        configuration.websiteDataStore = WKWebsiteDataStore(
+                        configuration.websiteDataStore = WKWebsiteDataStore.init(
                             forIdentifier: UUID(settings.iOSDataStoreUUID))
                     } else if settings.incognito {
                         let uuid = UUID()
-                        configuration.websiteDataStore = WKWebsiteDataStore.init(forIdentifier: uuid)
-                        settings.iOSDataStoreUUID = uuid
+                        configuration.websiteDataStore = WKWebsiteDataStore.init(
+                            forIdentifier: uuid)
+                        settings.iOSDataStoreUUID = uuid.uuidString
                     } else {
                         configuration.websiteDataStore = WKWebsiteDataStore.default()
                     }
@@ -2095,19 +2096,19 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate,
                 let scriptIdEscaped = idAttr.replacingOccurrences(of: "\'", with: "\\'")
                 scriptAttributes += " script.id = '\(scriptIdEscaped)'; "
                 scriptAttributes += """
-                    script.onload = function() {
+                                        script.onload = function() {
     if (window.\(JavaScriptBridgeJS.get_JAVASCRIPT_BRIDGE_NAME()) != null) {
         window.\(JavaScriptBridgeJS.get_JAVASCRIPT_BRIDGE_NAME()).callHandler('onInjectedScriptLoaded', '\(scriptIdEscaped)');
     }
 };
-"""
+                    """
                 scriptAttributes += """
-                    script.onerror = function() {
+                                        script.onerror = function() {
     if (window.\(JavaScriptBridgeJS.get_JAVASCRIPT_BRIDGE_NAME()) != null) {
         window.\(JavaScriptBridgeJS.get_JAVASCRIPT_BRIDGE_NAME()).callHandler('onInjectedScriptError', '\(scriptIdEscaped)');
     }
 };
-"""
+                    """
             }
             if let asyncAttr = scriptHtmlTagAttributes["async"] as? Bool, asyncAttr {
                 scriptAttributes += " script.async = true; "
@@ -3754,11 +3755,11 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate,
             if isInternalHandler {
                 evaluateJavaScript(
                     """
-if(window.\(JavaScriptBridgeJS.get_JAVASCRIPT_BRIDGE_NAME())[\(_callHandlerID)] != null) {
+                    if(window.\(JavaScriptBridgeJS.get_JAVASCRIPT_BRIDGE_NAME())[\(_callHandlerID)] != null) {
     window.\(JavaScriptBridgeJS.get_JAVASCRIPT_BRIDGE_NAME())[\(_callHandlerID)].resolve();
     delete window.\(JavaScriptBridgeJS.get_JAVASCRIPT_BRIDGE_NAME())[\(_callHandlerID)];
 }
-""", completionHandler: nil)
+                    """, completionHandler: nil)
                 return
             }
 
@@ -3773,11 +3774,11 @@ if(window.\(JavaScriptBridgeJS.get_JAVASCRIPT_BRIDGE_NAME())[\(_callHandlerID)] 
 
                 webView.evaluateJavaScript(
                     """
-if(window.\(JavaScriptBridgeJS.get_JAVASCRIPT_BRIDGE_NAME())[\(_callHandlerID)] != null) {
+                    if(window.\(JavaScriptBridgeJS.get_JAVASCRIPT_BRIDGE_NAME())[\(_callHandlerID)] != null) {
     window.\(JavaScriptBridgeJS.get_JAVASCRIPT_BRIDGE_NAME())[\(_callHandlerID)].resolve(\(json));
     delete window.\(JavaScriptBridgeJS.get_JAVASCRIPT_BRIDGE_NAME())[\(_callHandlerID)];
 }
-""", completionHandler: nil)
+                    """, completionHandler: nil)
             }
             callback.error = { (code: String, message: String?, details: Any?) in
                 let errorMessage = code + (message != nil ? ", " + (message ?? "") : "")
@@ -3785,11 +3786,11 @@ if(window.\(JavaScriptBridgeJS.get_JAVASCRIPT_BRIDGE_NAME())[\(_callHandlerID)] 
 
                 webView.evaluateJavaScript(
                     """
-if(window.\(JavaScriptBridgeJS.get_JAVASCRIPT_BRIDGE_NAME())[\(_callHandlerID)] != null) {
+                    if(window.\(JavaScriptBridgeJS.get_JAVASCRIPT_BRIDGE_NAME())[\(_callHandlerID)] != null) {
     window.\(JavaScriptBridgeJS.get_JAVASCRIPT_BRIDGE_NAME())[\(_callHandlerID)].reject(new Error('\(errorMessage.replacingOccurrences(of: "\'", with: "\\'"))'));
     delete window.\(JavaScriptBridgeJS.get_JAVASCRIPT_BRIDGE_NAME())[\(_callHandlerID)];
 }
-""", completionHandler: nil)
+                    """, completionHandler: nil)
             }
 
             if let channelDelegate = webView.channelDelegate {
@@ -4100,10 +4101,10 @@ if(window.\(JavaScriptBridgeJS.get_JAVASCRIPT_BRIDGE_NAME())[\(_callHandlerID)] 
 
         let url = URL(string: targetOrigin)?.absoluteString ?? "*"
         let source = """
-            (function() {
+                        (function() {
     window.postMessage(\(message.jsData), '\(url)', \(portsString));
 })();
-"""
+            """
         evaluateJavascript(source: source, completionHandler: completionHandler)
         message.dispose()
     }
