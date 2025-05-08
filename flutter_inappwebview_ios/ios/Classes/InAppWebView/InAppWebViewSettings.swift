@@ -10,7 +10,7 @@ import WebKit
 
 @objcMembers
 public class InAppWebViewSettings: ISettings<InAppWebView> {
-    
+    var iOSDataStoreUUID: String? = nil
     var useShouldOverrideUrlLoading = false
     var useOnLoadResource = false
     var useOnDownloadStart = false
