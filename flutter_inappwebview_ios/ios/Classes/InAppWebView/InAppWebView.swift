@@ -799,7 +799,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate,
                             forIdentifier: UUID(settings.iOSDataStoreUUID))
                     } else if settings.incognito {
                         let uuid = UUID()
-                        configuration.websiteDataStore = WKWebsiteDataStore(forIdentifier: uuid)
+                        configuration.websiteDataStore = WKWebsiteDataStore.init(forIdentifier: uuid)
                         settings.iOSDataStoreUUID = uuid
                     } else {
                         configuration.websiteDataStore = WKWebsiteDataStore.default()
